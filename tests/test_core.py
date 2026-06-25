@@ -7,6 +7,7 @@ from budget.core import (
     filter_by_category,
     get_balance,
     load_transactions_from_csv,
+    monthly_summary,
 )
 
 
@@ -232,3 +233,57 @@ def test_load_transactions_from_csv_supports_balance_calculation() -> None:
     transactions = load_transactions_from_csv(csv_path)
 
     assert get_balance(transactions) == 3366700.0
+
+
+def test_monthly_summary_returns_empty_dict_for_empty_transactions() -> None:
+    """Monthly summary should be empty when there are no transactions."""
+    assert monthly_summary([]) == {}
+
+
+def test_monthly_summary_groups_income_expense_and_net_by_month() -> None:
+    """Monthly summary should calculate income, expense, and net per month."""
+    transactions = [
+        {
+            "date": "2026-01-07",
+            "type": "수입",
+            "category": "급여",
+            "description": "월급",
+            "amount": 3500000,
+            "memo": "1월급여",
+        },
+        {
+            "date": "2026-01-10",
+            "type": "지출",
+            "category": "교통",
+            "description": "지하철",
+            "amount": -1500,
+            "memo": "",
+        },
+        {
+            "date": "2026-02-01",
+            "type": "수입",
+            "category": "급여",
+            "description": "월급",
+            "amount": 4358625,
+            "memo": "",
+        },
+    ]
+
+    assert monthly_summary(transactions) == {
+        "2026-01": {"income": 3500000, "expense": -1500, "net": 3498500},
+        "2026-02": {"income": 4358625, "expense": 0, "net": 4358625},
+    }
+
+
+def test_monthly_summary_matches_step1_transactions() -> None:
+    """Monthly summary should match known totals from step1 fixture data."""
+    csv_path = Path(__file__).parent.parent / "data" / "step1_transactions.csv"
+    transactions = load_transactions_from_csv(csv_path)
+
+    assert monthly_summary(transactions) == {
+        "2026-01": {
+            "income": 3500000,
+            "expense": -158300,
+            "net": 3341700,
+        }
+    }

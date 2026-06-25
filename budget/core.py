@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 Transaction = dict[str, Any]
+MonthlySummary = dict[str, dict[str, int]]
 
 
 def add_transaction(
@@ -44,3 +45,26 @@ def load_transactions_from_csv(csv_path: str | Path) -> list[Transaction]:
             {**row, "amount": int(row["amount"])}
             for row in csv.DictReader(file)
         ]
+
+
+def monthly_summary(transactions: list[Transaction]) -> MonthlySummary:
+    """Return monthly income, expense, and net totals."""
+    summary: MonthlySummary = {}
+    for transaction in transactions:
+        transaction_type = transaction["type"]
+        if transaction_type not in {"수입", "지출"}:
+            continue
+
+        month = str(transaction["date"])[:7]
+        totals = summary.setdefault(
+            month,
+            {"income": 0, "expense": 0, "net": 0},
+        )
+        amount = int(transaction["amount"])
+        if transaction_type == "수입":
+            totals["income"] += amount
+        else:
+            totals["expense"] += amount
+        totals["net"] = totals["income"] + totals["expense"]
+
+    return summary
