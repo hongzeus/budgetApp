@@ -1,2 +1,1 @@
 """budget package."""
-
