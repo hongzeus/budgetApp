@@ -1,19 +1,19 @@
 """Tests for budget.core."""
 
-import csv
 from pathlib import Path
 
-from budget.core import add_transaction, filter_by_category, get_balance
+from budget.core import (
+    add_transaction,
+    filter_by_category,
+    get_balance,
+    load_transactions_from_csv,
+)
 
 
 def load_step2_transactions() -> list[dict[str, object]]:
     """Load normalized transactions from the step2 CSV fixture."""
     csv_path = Path(__file__).parent.parent / "data" / "step2_transactions.csv"
-    with csv_path.open(encoding="utf-8-sig", newline="") as file:
-        return [
-            {**row, "amount": int(row["amount"])}
-            for row in csv.DictReader(file)
-        ]
+    return load_transactions_from_csv(csv_path)
 
 
 def test_add_transaction_increases_length() -> None:
@@ -188,3 +188,47 @@ def test_filter_by_category_returns_independent_result_list() -> None:
     result.clear()
 
     assert len(transactions) == 50
+
+
+def test_load_transactions_from_csv_loads_step1_rows() -> None:
+    """CSV loading should return every transaction row from step1 data."""
+    csv_path = Path(__file__).parent.parent / "data" / "step1_transactions.csv"
+
+    transactions = load_transactions_from_csv(csv_path)
+
+    assert len(transactions) == 10
+
+
+def test_load_transactions_from_csv_converts_amount_to_int() -> None:
+    """CSV loading should convert the amount field to an integer."""
+    csv_path = Path(__file__).parent.parent / "data" / "step1_transactions.csv"
+
+    transactions = load_transactions_from_csv(csv_path)
+
+    assert transactions[0]["amount"] == -12000
+    assert isinstance(transactions[0]["amount"], int)
+
+
+def test_load_transactions_from_csv_preserves_step1_fields() -> None:
+    """CSV loading should preserve the known step1 transaction fields."""
+    csv_path = Path(__file__).parent.parent / "data" / "step1_transactions.csv"
+
+    transactions = load_transactions_from_csv(csv_path)
+
+    assert transactions[0] == {
+        "date": "2026-01-05",
+        "type": "지출",
+        "category": "식비",
+        "description": "점심식사",
+        "amount": -12000,
+        "memo": "",
+    }
+
+
+def test_load_transactions_from_csv_supports_balance_calculation() -> None:
+    """CSV loading should return transactions usable by balance logic."""
+    csv_path = Path(__file__).parent.parent / "data" / "step1_transactions.csv"
+
+    transactions = load_transactions_from_csv(csv_path)
+
+    assert get_balance(transactions) == 3366700.0

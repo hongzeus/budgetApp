@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import csv
+from pathlib import Path
 from typing import Any
 
 Transaction = dict[str, Any]
@@ -33,3 +35,12 @@ def filter_by_category(
         for transaction in transactions
         if str(transaction["category"]).casefold() == target_category
     ]
+
+
+def load_transactions_from_csv(csv_path: str | Path) -> list[Transaction]:
+    """Load transactions from a UTF-8 BOM-compatible CSV file."""
+    with Path(csv_path).open(encoding="utf-8-sig", newline="") as file:
+        return [
+            {**row, "amount": int(row["amount"])}
+            for row in csv.DictReader(file)
+        ]
