@@ -9,5 +9,6 @@ Transaction = dict[str, Any]
 
 def add_transaction(transactions: list[Transaction], transaction: Transaction) -> list[Transaction]:
     """Add a transaction to the collection and return the updated transactions."""
-    pass
-
+    updated_transactions = transactions.copy()
+    updated_transactions.append(transaction)
+    return updated_transactions
