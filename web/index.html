@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>budgetApp Report</title>
+  <style>
+    :root {
+      --ink: #18221b;
+      --muted: #687469;
+      --paper: #fbfaf3;
+      --line: #d8dfcf;
+      --income: #176b4d;
+      --expense: #ad3d2f;
+      --net: #244f8f;
+      --panel: #ffffff;
+      --accent: #d7eb96;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(135deg, rgba(215, 235, 150, 0.45), transparent 36%),
+        linear-gradient(180deg, #fbfaf3 0%, #eef3e4 100%);
+      color: var(--ink);
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      min-height: 100vh;
+    }
+
+    main {
+      margin: 0 auto;
+      max-width: 1120px;
+      padding: 48px 24px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      gap: 24px;
+      justify-content: space-between;
+      padding-bottom: 28px;
+    }
+
+    h1 {
+      font-size: clamp(2.25rem, 5vw, 4.75rem);
+      line-height: 0.95;
+      margin: 0;
+    }
+
+    .source {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    .metrics {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin: 28px 0;
+    }
+
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: clamp(1.35rem, 3vw, 2.2rem);
+      line-height: 1.1;
+      overflow-wrap: anywhere;
+    }
+
+    .income {
+      color: var(--income);
+    }
+
+    .expense {
+      color: var(--expense);
+    }
+
+    .net {
+      color: var(--net);
+    }
+
+    section {
+      margin-top: 34px;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      margin: 0 0 14px;
+    }
+
+    .table-wrap {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      min-width: 760px;
+      width: 100%;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 14px 16px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      background: #f2f5e9;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .amount {
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .badge {
+      background: var(--accent);
+      border-radius: 999px;
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 10px;
+    }
+
+    @media (max-width: 760px) {
+      main {
+        padding: 32px 16px;
+      }
+
+      header {
+        display: block;
+      }
+
+      .source {
+        margin-top: 18px;
+      }
+
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <span class="badge">CSV budget report</span>
+        <h1>2026-01<br>가계부 요약</h1>
+      </div>
+      <p class="source">
+        데이터 출처: <strong>data/step1_transactions.csv</strong><br>
+        월별 요약은 현재 core 로직과 동일하게 수입/지출 타입을 집계합니다.
+      </p>
+    </header>
+
+    <section class="metrics" aria-label="월별 핵심 지표">
+      <article class="metric">
+        <span>거래 수</span>
+        <strong>10건</strong>
+      </article>
+      <article class="metric">
+        <span>수입 합계</span>
+        <strong class="income">3,500,000</strong>
+      </article>
+      <article class="metric">
+        <span>지출 합계</span>
+        <strong class="expense">-158,300</strong>
+      </article>
+      <article class="metric">
+        <span>순이익</span>
+        <strong class="net">3,341,700</strong>
+      </article>
+    </section>
+
+    <section>
+      <h2>월별 요약</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>월</th>
+              <th class="amount">수입</th>
+              <th class="amount">지출</th>
+              <th class="amount">순이익</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-01</td>
+              <td class="amount income">3,500,000</td>
+              <td class="amount expense">-158,300</td>
+              <td class="amount net">3,341,700</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>거래 목록</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>날짜</th>
+              <th>유형</th>
+              <th>카테고리</th>
+              <th>내용</th>
+              <th class="amount">금액</th>
+              <th>메모</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-01-05</td>
+              <td>지출</td>
+              <td>식비</td>
+              <td>점심식사</td>
+              <td class="amount expense">-12,000</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2026-01-07</td>
+              <td>수입</td>
+              <td>급여</td>
+              <td>월급</td>
+              <td class="amount income">3,500,000</td>
+              <td>1월급여</td>
+            </tr>
+            <tr>
+              <td>2026-01-10</td>
+              <td>지출</td>
+              <td>교통</td>
+              <td>지하철</td>
+              <td class="amount expense">-1,500</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2026-01-12</td>
+              <td>지출</td>
+              <td>식비</td>
+              <td>편의점</td>
+              <td class="amount expense">-5,800</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2026-01-15</td>
+              <td>지출</td>
+              <td>쇼핑</td>
+              <td>온라인쇼핑</td>
+              <td class="amount expense">-45,000</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2026-01-18</td>
+              <td>지출</td>
+              <td>식비</td>
+              <td>저녁외식</td>
+              <td class="amount expense">-35,000</td>
+              <td>가족식사</td>
+            </tr>
+            <tr>
+              <td>2026-01-20</td>
+              <td>지출</td>
+              <td>교통</td>
+              <td>택시</td>
+              <td class="amount expense">-15,000</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2026-01-22</td>
+              <td>지출</td>
+              <td>의료</td>
+              <td>병원 진료</td>
+              <td class="amount expense">-30,000</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2026-01-25</td>
+              <td>지출</td>
+              <td>문화/여가</td>
+              <td>영화관</td>
+              <td class="amount expense">-14,000</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2026-01-28</td>
+              <td>기타수입</td>
+              <td>기타수입</td>
+              <td>중고 판매</td>
+              <td class="amount income">25,000</td>
+              <td>중고마켓</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
