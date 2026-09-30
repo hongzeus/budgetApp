@@ -1,0 +1,57 @@
+:root {
+  font-family: "Noto Sans KR", sans-serif;
+  color: #130b43;
+  background: #ffffff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+
+body { margin: 0; min-width: 320px; background: #fff; }
+
+.page-shell { min-height: 100vh; padding: 26px 28px 32px; }
+
+.registration-card { width: min(100%, 674px); margin: 0 auto; }
+
+.eyebrow { margin: 0 0 14px; color: #6d3ed3; font-size: 14px; font-weight: 800; letter-spacing: .9px; }
+
+h1 { margin: 0; color: #130b43; font-size: clamp(34px, 5vw, 43px); line-height: 1.25; letter-spacing: -2.2px; }
+
+.intro { margin: 18px 0 26px; color: #777187; font-size: 17px; line-height: 1.5; letter-spacing: -.5px; }
+
+.divider { height: 1px; margin-bottom: 26px; background: #e2dbea; }
+
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+.field-group { min-width: 0; }
+
+label { display: block; margin-bottom: 9px; color: #130b43; font-size: 16px; font-weight: 700; }
+
+input, select { width: 100%; height: 48px; border: 1px solid #d8cce8; border-radius: 9px; padding: 0 15px; color: #130b43; background: #fff; font: inherit; font-size: 16px; outline: none; transition: border-color .18s, box-shadow .18s, background .18s; }
+
+input::placeholder { color: #8b8199; }
+
+input:focus, select:focus { border-color: #6d3ed3; box-shadow: 0 0 0 3px rgba(109, 62, 211, .13); }
+
+select { appearance: auto; }
+
+.field-error { min-height: 22px; margin: 6px 0 0; color: #ef3030; font-size: 14px; line-height: 1.45; }
+
+.has-error input, .has-error select { border-color: #6d3ed3; background: #e9f0ff; }
+
+.session-field { margin-top: 9px; }
+
+.submit-button { width: 100%; height: 55px; margin-top: 26px; border: 0; border-radius: 8px; color: #fff; background: #6d3ed3; font: inherit; font-size: 19px; font-weight: 800; cursor: pointer; transition: background .18s, transform .18s; }
+
+.submit-button:hover { background: #5c2ec3; }
+.submit-button:active { transform: translateY(1px); }
+
+.success-message { min-height: 24px; margin: 12px 0 0; color: #277c48; font-size: 14px; text-align: center; }
+
+@media (max-width: 560px) {
+  .page-shell { padding: 24px 20px 28px; }
+  .field-grid { grid-template-columns: 1fr; gap: 0; }
+  .session-field { margin-top: 7px; }
+  h1 { letter-spacing: -1.8px; }
+}

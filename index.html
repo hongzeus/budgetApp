@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="행사 참가 신청" />
+    <title>행사 참가 신청</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <form class="registration-card" id="registration-form" novalidate>
+        <p class="eyebrow">HANDS-ON WORKSHOP</p>
+        <h1>행사 참가 신청</h1>
+        <p class="intro">참가 정보를 입력하고 희망 회차를 선택해 주세요.</p>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <div class="field-grid">
+          <div class="field-group">
+            <label for="name">이름</label>
+            <input id="name" name="name" type="text" placeholder="이름을 입력해 주세요" autocomplete="name" />
+            <p class="field-error" id="name-error" role="alert"></p>
+          </div>
+
+          <div class="field-group">
+            <label for="email">이메일</label>
+            <input id="email" name="email" type="email" placeholder="example@email.com" autocomplete="email" />
+            <p class="field-error" id="email-error" role="alert"></p>
+          </div>
+        </div>
+
+        <div class="field-group session-field">
+          <label for="session">참가 회차</label>
+          <select id="session" name="session">
+            <option value="">회차를 선택해 주세요</option>
+            <option value="1회차 · 오전 10:00">1회차 · 오전 10:00</option>
+            <option value="2회차 · 오후 2:00">2회차 · 오후 2:00</option>
+            <option value="3회차 · 오후 5:00">3회차 · 오후 5:00</option>
+          </select>
+          <p class="field-error" id="session-error" role="alert"></p>
+        </div>
+
+        <button class="submit-button" type="submit">신청하기</button>
+        <p class="success-message" id="success-message" role="status"></p>
+      </form>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
